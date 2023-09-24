@@ -30,7 +30,7 @@ public class DonHang {
 
     @OneToMany(mappedBy = "donHang",
             fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL
+            cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
     )
     private List<ChiTietDonHang> danhSachChiTietDonHang;
 

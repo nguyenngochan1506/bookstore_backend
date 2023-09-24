@@ -22,7 +22,7 @@ public class ChiTietDonHang {
     @ManyToOne(
             cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
     )
-    @JoinColumn(name = "sach", nullable = false)
+    @JoinColumn(name = "ma_sach", nullable = false)
     private Sach sach;
 
     @ManyToOne(
