@@ -16,8 +16,6 @@ public class ChiTietDonHang {
 
     @Column(name = "gia_ban")
     private double giaBan;
-    @Column(name = "gia_niem")
-    private double giaNiem;
 
     @ManyToOne(
             cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
