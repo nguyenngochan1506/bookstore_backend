@@ -2,6 +2,9 @@ package vn.titv.webbansach_backend.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.sql.Date;
+
 @Entity
 @Table(name = "danh_gia")
 @Data
@@ -16,6 +19,9 @@ public class DanhGia {
 
     @Column(name = "nhan_xet")
     private String nhanXet;
+
+    @Column(name = "ngay_danh_gia")
+    private Date ngayDanhGia;
 
     @ManyToOne(
             cascade = {CascadeType.PERSIST, CascadeType.DETACH,

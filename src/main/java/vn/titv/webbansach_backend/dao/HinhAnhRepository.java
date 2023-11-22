@@ -6,4 +6,5 @@ import vn.titv.webbansach_backend.entity.HinhAnh;
 
 @RepositoryRestResource(path = "hinh-anh")
 public interface HinhAnhRepository extends JpaRepository<HinhAnh, Integer> {
+    public boolean existsByDuLieuAnh( String duLieuAnh);
 }

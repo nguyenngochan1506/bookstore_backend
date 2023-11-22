@@ -20,7 +20,7 @@ public class HinhAnh {
     @Column(name = "duong_dan")
     private String duongDan;
 
-    @Column(name = "du_lieu_anh")
+    @Column(name = "du_lieu_anh", columnDefinition =  "LONGTEXT")
     @Lob    //danh dau la du lieu lon
     private String duLieuAnh;
 

@@ -11,6 +11,8 @@ import vn.titv.webbansach_backend.entity.NguoiDung;
 
 @Configuration
 public class RepositoryRestConfigurer implements org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer {
+    private String url = "http://localhost:3000";
+
    @Autowired
     private EntityManager entityManager;
 
@@ -28,7 +30,10 @@ public class RepositoryRestConfigurer implements org.springframework.data.rest.w
         //vd: ngăn không cho người dùng chỉnh sửa hoặc xoá dữ liêu
         disableHttpMethods(NguoiDung.class, config, new HttpMethod[]{HttpMethod.DELETE, HttpMethod.PUT});
 
-
+        // CORS configuration
+        cors.addMapping("/**")
+                .allowedOrigins(url)
+                .allowedMethods("GET", "POST", "PUT", "DELETE");
 
     }
 
