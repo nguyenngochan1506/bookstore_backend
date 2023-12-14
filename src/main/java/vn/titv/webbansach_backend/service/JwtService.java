@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import vn.titv.webbansach_backend.dao.NguoiDungRepository;
 import vn.titv.webbansach_backend.entity.NguoiDung;
 import vn.titv.webbansach_backend.entity.Quyen;
 
@@ -56,18 +57,22 @@ public class JwtService {
         byte[] bytesKey = Decoders.BASE64.decode(KEY_SECRET);
         return Keys.hmacShaKeyFor(bytesKey);
     }
-    public String generateToken(UserDetails userDetails){
+    public String generateToken(NguoiDung nguoiDung){
 
 
-        return generateToken(new HashMap<>(), userDetails);
+        return generateToken(new HashMap<>(), nguoiDung);
     }
-    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails){
-        UserDetails nguoiDung = userService.loadUserByUsername(userDetails.getUsername());
-        if(nguoiDung != null && !nguoiDung.getAuthorities().isEmpty()){
-            List<? extends GrantedAuthority> list  = nguoiDung.getAuthorities().stream().toList();
+    public String generateToken(Map<String, Object> extraClaims, NguoiDung nguoiDung){
+        UserDetails userDetails = userService.loadUserByUsername(nguoiDung.getTenDangNhap());
+        if(userDetails != null && !userDetails.getAuthorities().isEmpty()){
+            extraClaims.put("idUser", nguoiDung.getMaNguoiDung());
+            List<? extends GrantedAuthority> list  = userDetails.getAuthorities().stream().toList();
             for(var grantedAuthority:list){
                 if(grantedAuthority.getAuthority().equals("ADMIN")){
                     extraClaims.put("isAdmin", true);
+                }
+                if(grantedAuthority.getAuthority().equals("USER")){
+                    extraClaims.put("isUser", true);
                 }
             }
         }

@@ -45,6 +45,7 @@ public class SecurityConfiguration {
                 auth -> auth
                         .requestMatchers(HttpMethod.GET, Enpoints.PUBLIC_GET_ENPOINTS).permitAll()
                         .requestMatchers(HttpMethod.POST, Enpoints.PUBLIC_POST_ENPOINTS).permitAll()
+                        .requestMatchers(HttpMethod.PATCH, Enpoints.USER_PATCH_ENPOINTS).hasAnyAuthority("ADMIN", "USER")
                         .requestMatchers(HttpMethod.GET, Enpoints.ADMIN_ENPOINT).hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.POST, Enpoints.ADMIN_ENPOINT).hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.PUT, Enpoints.ADMIN_ENPOINT).hasAuthority("ADMIN")

@@ -11,10 +11,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import vn.titv.webbansach_backend.dao.NguoiDungRepository;
+import vn.titv.webbansach_backend.dao.QuyenRepository;
 import vn.titv.webbansach_backend.entity.NguoiDung;
+import vn.titv.webbansach_backend.entity.Quyen;
 import vn.titv.webbansach_backend.security.AuthenticationResponse;
 import vn.titv.webbansach_backend.security.AuthenticationResquest;
 
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -26,16 +29,18 @@ public class TaiKhoanService {
     private JwtService jwtService;
     private UserService userService;
     private AuthenticationManager authenticationManager;
+    private QuyenRepository quyenRepository;
 
 
     @Autowired
-    public TaiKhoanService(AuthenticationManager authenticationManager, UserService userService, JwtService jwtService ,NguoiDungRepository nguoiDungRepository, EmailService emailService, BCryptPasswordEncoder passwordEncoder) {
+    public TaiKhoanService(QuyenRepository quyenRepository ,AuthenticationManager authenticationManager, UserService userService, JwtService jwtService ,NguoiDungRepository nguoiDungRepository, EmailService emailService, BCryptPasswordEncoder passwordEncoder) {
         this.nguoiDungRepository = nguoiDungRepository;
         this.emailService = emailService;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
         this.userService = userService;
+        this.quyenRepository = quyenRepository;
     }
 
 
@@ -56,6 +61,8 @@ public class TaiKhoanService {
         //gán và gửi mã kích hoạt
         nguoiDung.setMaKichHoat(taoMaKichHoat());
         nguoiDung.setDaKichHoat(false);
+        Quyen quyen = quyenRepository.findByTenQuyen("USER");
+        nguoiDung.setDanhSachQuyen(List.of(quyen));
 
 
         //lưu người dùng vào hệ thống
@@ -129,7 +136,7 @@ public class TaiKhoanService {
             try {
                 Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUserName(), request.getPassword()));
                 if(auth.isAuthenticated()) {
-                    String token = jwtService.generateToken(userService.loadUserByUsername(request.getUserName()));
+                    String token = jwtService.generateToken(nguoiDungRepository.findByTenDangNhap(request.getUserName()));
 
                     AuthenticationResponse response = new AuthenticationResponse();
                     response.setToken(token);
